@@ -15,6 +15,8 @@ sudo apt install -y apt-transport-https ca-certificates curl software-properties
 
 # 3. Adiciona a chave GPG oficial do Docker
 echo "Configurando chave GPG do Docker..."
+# Remove a chave antiga se ela existir para evitar conflitos em re-instalações
+sudo rm -f /usr/share/keyrings/docker-archive-keyring.gpg
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
 
 # 4. Adiciona o repositório estável do Docker
@@ -24,11 +26,11 @@ echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docke
 # 5. Atualiza novamente e instala o Docker Engine
 echo "Instalando Docker Community Edition..."
 sudo apt update
-sudo apt install -y docker-ce
+sudo apt install -y docker-ce docker-ce-cli containerd.io
 
 # 6. Adiciona o usuário atual ao grupo docker
-echo "Configurando permissões para o usuário ${USER}..."
-sudo usermod -aG docker ${USER}
+echo "Configurando permissões para o usuário $USER..."
+sudo usermod -aG docker $USER
 
 echo "--- Instalação concluída com sucesso! ---"
-echo "AVISO: Para que as mudanças de grupo façam efeito, você precisará deslogar e logar novamente ou reiniciar o sistema."
+echo "AVISO: Para que as mudanças de grupo façam efeito, saia da sessão (logout) e entre novamente."
